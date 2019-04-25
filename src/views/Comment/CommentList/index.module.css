@@ -1,0 +1,29 @@
+.commentLi {
+  position: relative;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #f1f1f1;
+}
+.commentInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+.commentFooter {
+  height: 40px;
+}
+.commentBtn {
+  float: left;
+
+  & .commentBtnDel {
+    color: #409eff;
+    cursor: pointer;
+  }
+  & .commentBtnDel::after {
+    color: #66b1ff
+  }
+}
+.commentTime {
+  float: right;
+}
