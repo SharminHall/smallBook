@@ -1,18 +1,16 @@
 import React, { Component } from 'react'
 import CommentInput from './CommentInput/CommentInput'
 import CommentList from './CommentList/CommentList'
+
+import loadDataFromLocalstorage from '@/components/higher/wrapWithLoadData/index'
 import style from './comment.module.css'
 
 class CommentApp extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
-      comments: []
+      comments: props.data || []
     }
-  }
-
-  componentWillMount () {
-    this._loadComments()
   }
 
   render () {
@@ -31,24 +29,15 @@ class CommentApp extends Component {
     const comments = this.state.comments.slice(0)
     comments.unshift(e)
     this.setState({ comments })
-    this._saveComments(comments)
+    this.props.saveData(comments)
   }
 
   onCommentDel = (index) => {
     let comments = this.state.comments.slice(0)
     comments.splice(index, 1)
     this.setState({ comments })
-    this._saveComments(comments)
-  }
-
-  _loadComments () {
-    let comments = localStorage.getItem('comments')
-    comments && this.setState({ comments: JSON.parse(comments) })
-  }
-
-  _saveComments (comments) {
-    localStorage.setItem('comments', JSON.stringify(comments))
+    this.props.saveData(comments)
   }
 }
 
-export default CommentApp
+export default loadDataFromLocalstorage(CommentApp, 'comments')

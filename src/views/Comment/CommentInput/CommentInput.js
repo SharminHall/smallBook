@@ -1,22 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+
+import loadDataFromLocalstorage from '@/components/higher/wrapWithLoadData/index'
 import style from './index.module.css'
 
 class CommentInput extends Component {
   static propTypes = {
-    onSubmit: PropTypes.func
+    onSubmit: PropTypes.func,
+    saveData: PropTypes.func.isRequired
   }
 
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
-      username: '',
+      username: props.data,
       content: ''
     }
-  }
-
-  componentWillMount () {
-    this._loadUname()
   }
 
   componentDidMount () {
@@ -58,7 +57,7 @@ class CommentInput extends Component {
   }
 
   onBlurUsername = (e) => {
-    this._saveUname(e.target.value)
+    this.props.saveData(e.target.value)
   }
 
   onChangeUsername = (e) => {
@@ -86,15 +85,6 @@ class CommentInput extends Component {
       content: ''
     })
   }
-
-  _loadUname = () => {
-    let username = localStorage.getItem('uname')
-    username && this.setState({ username })
-  }
-
-  _saveUname  = (uname) => {
-    localStorage.setItem('uname', uname)
-  }
 }
 
-export default CommentInput
+export default loadDataFromLocalstorage(CommentInput, 'uname')

@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import style from './index.module.css'
 
+
+/**
+ * 单条评论类
+ */
 class Comment extends Component {
   static propTypes = {
     onCommentDel: PropTypes.func.isRequired
@@ -33,7 +37,9 @@ class Comment extends Component {
           <div className='comment-user'>
             <span>{comment.username} </span>：
           </div>
-          <p>{comment.content}</p>
+          <p dangerouslySetInnerHTML={{
+            __html: this._getProcessedContent(comment.content)
+          }}></p>
         </div>
         <div className={style.commentFooter}>
           <span className={style.commentBtn}>
@@ -54,8 +60,21 @@ class Comment extends Component {
         : `${Math.round(Math.max(duration, 1))} 秒前`
     })
   }
+
+  _getProcessedContent = (content) => {
+    return content
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;")
+      .replace(/`([\S\s]+?)`/g, '<code>$1</code>')
+  }
 }
 
+/**
+ * 评论列表容器组件
+ */
 function CommentList ({
   comments = [],
   onCommentDel = function () {}
